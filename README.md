@@ -207,7 +207,7 @@ Rounded up to the nearest `MEM_STEP_MIB` and clamped to a minimum of `MEM_MIN_MI
 ### Disk
 
 $$
-\text{ShortfallMiB} = \sum_{\text{partitions}} \max\!\left(0,\; \text{CapacityMiB} \times \frac{\text{DISK\_MIN\_FREE\_PCT}}{100} - \text{FreeSpaceMiB}\right)
+\text{ShortfallMiB} = \sum_{\text{partitions}} \max\left(0, \text{CapacityMiB} \times \frac{\text{DISK\_MIN\_FREE\_PCT}}{100} - \text{FreeSpaceMiB}\right)
 $$
 
 VMs are flagged for expansion when any partition's free % drops below `DISK_MIN_FREE_PCT`.
