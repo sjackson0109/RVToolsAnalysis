@@ -1,0 +1,206 @@
+        Instructions for Creating RightSizing.xlsx
+==========================================
+
+QUICK BUILD INSTRUCTIONS:
+1. Open Excel
+2. Save as "RightSizing.xlsx" (or RightSizing.xlsm if you want VBA buttons)
+3. Copy the content below into your Instructions sheet
+4. Import the .m files as Power Queries (see detailed steps below)
+
+COPY THIS INTO YOUR EXCEL INSTRUCTIONS SHEET:
+============================================
+
+RVTools VM Right-Sizing Analysis
+
+Quick Start:
+1. Click "Browse for RVTools File" to select your RVTools export
+2. Click "Refresh All Analysis" to update all data
+3. Review results in the analysis sheets
+
+Selected File: [Cell B5 - will show file path]
+Status: Ready - Select RVTools file to begin
+Progress: [Cell B7 - shows current operation] 
+Last Refresh: [Cell B8 - timestamp]
+Duration: [Cell B9 - time taken]
+Queries: [Cell B10 - count]
+
+[Insert Browse Button in A12]
+[Insert Refresh Button in A14]
+
+POWER QUERY IMPORT CHECKLIST:
+=============================
+☐ Import _DATASOURCE.m as "RVTools-Source" (Connection Only)
+☐ Import CPU.m as "CPU Analysis" 
+☐ Import RAM.m as "RAM Analysis"
+☐ Import DISK.m as "Disk Analysis" 
+☐ Import GPU.m as "GPU Analysis"
+☐ Import CDROM.m as "CDROM Analysis"
+☐ Import NIC.m as "NIC Analysis"
+
+DETAILED INSTRUCTIONS:
+======================
+
+OVERVIEW
+This Excel workbook provides automated analysis of VMware environments using RVTools data to identify right-sizing opportunities across multiple resource categories.
+
+PREREQUISITES
+Software Required:
+- RVTools (latest version) - Download from robware.net
+- Excel with Power Query support
+- VMware vCenter access with appropriate permissions
+
+RVTools Permissions Required:
+- Read-only access to vCenter Server
+- VM and Host inventory viewing permissions
+- Performance data access (recommended)
+
+STEP 1: EXPORT DATA FROM RVTOOLS
+
+1.1 Connect RVTools to vCenter
+1. Launch RVTools
+2. Click File → Connect
+3. Enter your vCenter Server details:
+   - vCenter Server: vcenter.yourdomain.com
+   - Username: domain\username or username@domain.com
+   - Password: Your vCenter password
+4. Click Connect
+
+1.2 Wait for Data Collection
+- RVTools will collect comprehensive VM inventory data
+- Large environments: This may take 10-30 minutes
+- Progress indicators will show collection status
+
+1.3 Export to Excel
+1. Once collection is complete, click File → Export all to Excel
+2. Browse to select save location (recommended: dedicated folder)
+3. Filename: Use descriptive name like RVTools_Export_2026-03-10.xlsx
+4. Click Save
+5. Verify: Exported file contains multiple worksheets (vInfo, vCPU, vMemory, vDisk, etc.)
+
+STEP 2: USE THIS WORKBOOK
+
+2.1 Select RVTools File
+1. Click "Browse for RVTools File" button
+2. Navigate to your RVTools export file
+3. Select the file and click Open
+4. The file path will appear in the "Selected File" field
+
+2.2 Refresh Analysis
+1. Click "Refresh All Analysis" button
+2. Wait for processing to complete (typically 1-5 minutes)
+3. Review progress in the status fields
+4. Check for any error messages
+
+2.3 Review Results
+Each analysis will create a separate sheet with actionable recommendations:
+
+CPU Analysis Output:
+VM - Virtual machine name
+CPUs - Current vCPU allocation
+CPU_Util_Pct - Current utilization percentage
+CPU_Recommended_vCPU - Recommended vCPU count
+CPU_Action - "Decrease vCPU" or "Increase vCPU"
+
+RAM Analysis Output:
+VM - Virtual machine name
+Mem_Size_MiB - Current memory allocation
+Mem_Util_Pct - Memory utilization percentage
+Mem_Recommended_MiB - Recommended memory allocation
+Mem_Action - "Decrease RAM" or "Increase RAM"
+
+Disk Analysis Output:
+VM - Virtual machine name
+Partition_Min_Free_Pct - Lowest free space percentage
+Disk_Shortfall_MiB - Additional space needed
+Disk_Action - "Expand disk"
+
+GPU Analysis Output:
+VM - Virtual machine name
+Video_RAM_Current_KB - Current video RAM allocation
+Video_RAM_Recommended_KB - Recommended allocation
+Video_RAM_Action - "Decrease video RAM" or "Increase video RAM"
+
+CDROM Analysis Output:
+VM - Virtual machine name
+Connected_CDROM_Count - Number of connected CD/DVD drives
+Connected_Floppy_Count - Number of connected floppy drives
+CDROM_Action - "Disconnect CDROM", "Remove backing", etc.
+
+NIC Analysis Output:
+VM - Virtual machine name
+NIC_Total_Count - Total network interfaces
+NIC_Connected_Count - Connected network interfaces
+NIC_Action - "Remove excess NICs", "Add redundant NIC", etc.
+
+STEP 3: INTERPRETING RESULTS
+
+3.1 Action Priorities
+1. High Impact: CPU and RAM reductions (immediate resource savings)
+2. Medium Impact: Disk expansions (prevent outages)
+3. Low Impact: Video RAM, CDROM, NIC optimizations (efficiency gains)
+
+3.2 Implementation Guidelines
+
+CPU Downsizing:
+- Conservative approach: Start with VMs showing less than 50% utilization
+- Test thoroughly: Performance impact varies by workload
+- Monitor: Track performance metrics post-change
+
+Memory Downsizing:
+- 50% reduction cap: Built-in safety limit per sizing pass
+- Active vs Consumed: Default uses ACTIVE memory basis
+- Headroom: 20% buffer above actual usage
+
+Disk Expansion:
+- Immediate attention: VMs below 20% free space
+- Plan expansion: Review shortfall calculations
+- Monitor growth: Regular analysis recommended
+
+3.3 Validation Steps
+Before implementing changes:
+1. Cross-reference with application teams
+2. Check maintenance windows for planned changes
+3. Verify backup and rollback procedures
+4. Test in development environments first
+
+STEP 4: REGULAR MAINTENANCE
+
+4.1 Regular Refresh Schedule
+- Weekly: For dynamic environments
+- Monthly: For stable environments
+- Before major changes: Capacity planning exercises
+
+4.2 Updating Analysis
+1. Export new RVTools data
+2. Use Browse button to select new file
+3. Click Refresh All Analysis
+4. Review new recommendations
+
+TROUBLESHOOTING
+
+Common Issues:
+
+"Column not found" Errors
+- Cause: RVTools version differences or incomplete export
+- Solution: Verify all worksheets exported, check RVTools version
+
+"File not found" Errors  
+- Cause: Incorrect file path or file moved
+- Solution: Use Browse button to reselect file
+
+Empty Results
+- Cause: Filtering too restrictive or no optimization opportunities
+- Solution: Check that VMs meet filtering criteria
+
+Query Timeout Errors
+- Cause: Large datasets or slow system
+- Solution: Close other applications, try smaller date range
+
+Support Resources:
+- RVTools Documentation: robware.net
+- Power Query Help: Microsoft documentation
+
+Created: March 10, 2026  
+Author: Simon Jackson (@sjackson0109)  
+Version: 1.0  
+Compatibility: RVTools 4.x+, Excel with Power Query

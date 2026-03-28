@@ -1,0 +1,40 @@
+# RVTools export files (contain sensitive data)
+RVTools_*.xlsx
+RVTools_*.xls
+*_export_*.xlsx
+*_export_*.xls
+
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Excel temporary files
+~$*.xlsx
+~$*.xlsm
+~$*.xls
+
+# Windows thumbnail cache
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Log files
+*.log
+
+# Backup files
+*.bak
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db

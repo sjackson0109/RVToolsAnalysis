@@ -1,0 +1,106 @@
+EXCEL WORKBOOK SETUP GUIDE
+===========================
+
+STEP 1: CREATE BASE WORKBOOK
+1. Open Excel and create a new workbook
+2. Save as: RVTools-Analysis.xlsm (macro-enabled format)
+3. Rename Sheet1 to "Instructions"
+
+STEP 2: CREATE INSTRUCTIONS SHEET LAYOUT
+On the Instructions sheet, set up the following layout:
+
+A1: RVTools VM Right-Sizing Analysis
+A2: [Leave blank for spacing]
+A3: Quick Start:
+A4: [Leave blank for spacing]
+A5: Selected File:              B5: [This will show selected file path]
+A6: Status:                     B6: [Status updates]  
+A7: Progress:                   B7: [Progress info]
+A8: Last Refresh:               B8: [Timestamp]
+A9: Duration:                   B9: [Time taken]
+A10: Queries:                   B10: [Query count]
+
+A12: [Insert Browse Button here - see Step 4]
+A14: [Insert Refresh Button here - see Step 4]
+
+A16: [Paste the plain text instructions from Instructions.md below this]
+
+STEP 3: ADD VBA CODE
+1. Press Alt+F11 to open VBA Editor
+2. In Project Explorer, right-click on "ThisWorkbook"
+3. Select Insert > Module
+4. Copy and paste the contents of ExcelVBA.bas into the new module
+5. Close VBA Editor (Alt+Q)
+
+STEP 4: INSERT ACTIVEX BUTTONS
+1. Go to Developer tab (if not visible: File > Options > Customize Ribbon > Check Developer)
+2. Click Insert > ActiveX Controls > Command Button
+3. Draw first button in cell A12 area
+4. Right-click button > Properties:
+   - Name: CommandButton1
+   - Caption: Browse for RVTools File
+   - Width: 150
+   - Height: 30
+
+5. Draw second button in cell A14 area
+6. Right-click button > Properties:
+   - Name: CommandButton2  
+   - Caption: Refresh All Analysis
+   - Width: 150
+   - Height: 30
+
+7. Exit Design Mode (Developer > Design Mode to turn off)
+
+STEP 5: IMPORT POWER QUERY FILES
+1. Go to Data > Get Data > From Other Sources > From Web
+2. Cancel the dialog (we just need to access Power Query Editor)
+3. This opens Power Query Editor
+4. For each .m file (CPU.m, RAM.m, DISK.m, GPU.m, CDROM.m, NIC.m):
+   a. Click New Query > Blank Query
+   b. Rename query (right-click > Rename): "CPU Analysis", "RAM Analysis", etc.
+   c. Go to View > Advanced Editor
+   d. Copy and paste the entire .m file content
+   e. Click Done
+
+5. Import the _DATASOURCE.m file:
+   a. Create new blank query
+   b. Rename to "RVTools-Source"  
+   c. Paste _DATASOURCE.m content
+   d. Right-click query > Enable Load > UNCHECK (Connection Only)
+
+6. Close & Apply to return to Excel
+
+STEP 6: CREATE RESULT SHEETS
+The queries will automatically create sheets for each analysis:
+- CPU Analysis
+- RAM Analysis  
+- Disk Analysis
+- GPU Analysis
+- CDROM Analysis
+- NIC Analysis
+
+STEP 7: FINAL SETUP
+1. Format the Instructions sheet for better readability
+2. Add borders and colors as desired
+3. Protect sheets if needed (except Instructions)
+4. Save the workbook
+
+STEP 8: TESTING
+1. Test the Browse button - it should open a file picker
+2. Select a test RVTools export file
+3. Test the Refresh button - it should process all queries
+4. Verify data appears in the analysis sheets
+
+USAGE WORKFLOW:
+1. Export data from RVTools to Excel
+2. Open your RVTools-Analysis.xlsm workbook
+3. Click "Browse for RVTools File" and select your export
+4. Click "Refresh All Analysis" to process data
+5. Review results in the individual analysis sheets
+
+TROUBLESHOOTING:
+- If buttons don't work: Check macro security settings (File > Options > Trust Center > Trust Center Settings > Macro Settings > Enable all macros)
+- If queries fail: Verify RVTools export contains all required sheets (vInfo, vCPU, vMemory, etc.)
+- If connections fail: Check file path and permissions
+
+The result will be a single, self-contained Excel file that can analyze any RVTools export with just two button clicks!
