@@ -119,9 +119,25 @@ foreach ($file in $mFiles) {
         Write-Host "Found: $file"
         $foundCount++
         
-        # Import the .m file 
+        # Import the .m file
         try {
             $mContent = Get-Content $file -Raw
+
+            # For the datasource query, auto-detect the RVTools export in .\sample\ and inject its absolute path
+            if ($file -eq "_DATASOURCE.m") {
+                $sampleDir = Join-Path (Get-Location) "sample"
+                $sampleFiles = Get-ChildItem -Path $sampleDir -Filter "RVTools_export_all_*.xlsx" -ErrorAction SilentlyContinue |
+                               Sort-Object LastWriteTime -Descending
+                if ($sampleFiles) {
+                    $rvtoolsPath = $sampleFiles[0].FullName
+                    Write-Host "Auto-detected RVTools file: $rvtoolsPath"
+                    $escapedPath = $rvtoolsPath.Replace('\', '\\')
+                    $mContent = $mContent -replace 'RVTOOLS_FILE_PATH = "[^"]*"', "RVTOOLS_FILE_PATH = `"$rvtoolsPath`""
+                } else {
+                    Write-Warning "No RVTools export found in .\sample\ — update RVTOOLS_FILE_PATH manually"
+                }
+            }
+
             $queryName = $file.Replace(".m", "").Replace("_", "").Replace("DATASOURCE", "RVTools-Source")
             
             # Add to workbook as Power Query

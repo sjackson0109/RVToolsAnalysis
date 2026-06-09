@@ -21,7 +21,7 @@ let
     // CONFIGURATION
     // =========================================================================
 
-    RVTOOLS_FILE_PATH = "C:\Users\Administrator\RVTools-Analysis\RVTools_export_all_2026-03-03_10.41.56.xlsx",
+    RVTOOLS_FILE_PATH = ".\sample\RVTools_export_all_*.xlsx",
 
     // =========================================================================
     // END OF CONFIGURATION
